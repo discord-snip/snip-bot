@@ -48,6 +48,10 @@ async def display_snippet(event: hikari.GuildMessageCreateEvent):
 
     # respond with the snippet
     if event.content.startswith("$ snippet"):
-        await event.message.respond(f"""```{language}\n{connect_to_database(config['HOST'], config['USER'], config['PASSWD'], config['PORT'], config['DATABASE'], snippet_name, language)}\n```""")
+        connection = connect_to_database(config['HOST'], config['USER'], config['PASSWD'], config['PORT'], config['DATABASE'], snippet_name, language)
+        if  connection == None:
+            await event.message.respond(f'Snippet not found!')
+        else:
+            await event.message.respond(f"""```{language}\n{connection}\n```""")
 
 bot.run()
