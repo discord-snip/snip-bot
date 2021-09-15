@@ -1,5 +1,4 @@
-import discord
-from discord.ext import commands
+import hikari
 from dotenv import dotenv_values
 
 config = {
@@ -7,20 +6,19 @@ config = {
     **dotenv_values(".env.local")
 }
 
-client = commands.Bot(command_prefix="$")
+bot = hikari.GatewayBot(token=config['BOT_TOKEN'])
 
-@client.event
-async def on_ready():
-    print('Our bot is ready')
-
-# testing. . .
-@client.event
-async def on_message(message):
-    if message.author == client.user:
+@bot.listen()
+async def display_snippet(event: hikari.GuildMessageCreateEvent):
+    # If a non-bot user sends a message "$snippet", respond with "Looking for /code/ in /language/"
+    # We check if there is actually content first, if no message content exists,
+    # we would get `None' here.
+    if event.is_bot or not event.content:
         return
 
-    if message.content.startswith('$snippet_test'):
-        msg = message.content.split()
-        await message.channel.send(f'Looking for: "{msg[1]}" in "{msg[2]}"')
+    msg = event.content.split()[1:]
 
-client.run(config['BOT_TOKEN'])
+    if event.content.startswith("$snippet"):
+        await event.message.respond(f'Looking for {msg[0]} in {msg[1]}')
+
+bot.run()
