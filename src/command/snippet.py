@@ -1,7 +1,7 @@
 from src.database_connection import find_snippet
 
 
-def display_snippet(snippet_name, language):
+def command_snippet(snippet_name, language):
     snippet = find_snippet(snippet_name, language)
 
     if snippet is None:
