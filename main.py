@@ -1,6 +1,6 @@
 from src.config import config
 import hikari
-from src.command.snippet import display_chosen_snippet
+from src.command.snippet import display_snippet
 from src.command.list_snippets import list_language_snippets
 from src.command.search import search_snippet
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         if command == "snippet" and len(msg) == 2:
             snippet_name = msg[0]
             snippet_language = msg[1]
-            await event.message.respond(display_chosen_snippet(snippet_name, snippet_language))
+            await event.message.respond(display_snippet(snippet_name, snippet_language))
         elif command == "list" and len(msg) == 1:
             listed_language = msg[0]
             await event.message.respond(list_language_snippets(listed_language))
