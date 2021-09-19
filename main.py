@@ -11,7 +11,7 @@ if __name__ == '__main__':
 
 
     @bot.listen()
-    async def display_snippet(event: hikari.GuildMessageCreateEvent):
+    async def respond(event: hikari.GuildMessageCreateEvent):
         # If a non-bot user sends a message "$snippet", respond with "Looking for /code/ in /language/"
         # We check if there is actually content first, if no message content exists,
         # we would get `None' here.
@@ -30,10 +30,7 @@ if __name__ == '__main__':
         if command == "snippet" and len(msg) == 2:
             snippet_name = msg[0]
             snippet_language = msg[1]
-            try:
-                await event.message.respond(display_snippet(snippet_name, snippet_language))
-            except TypeError as e:
-                await event.message.respond('An error occured: there is unsupported char in your message')
+            await event.message.respond(display_snippet(snippet_name, snippet_language))
         elif command == "list" and len(msg) == 1:
             listed_language = msg[0]
             await event.message.respond(list_language_snippets(listed_language))
