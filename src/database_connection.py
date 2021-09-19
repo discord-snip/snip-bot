@@ -28,24 +28,36 @@ def find_snippet(name, language):
     return random.choice(result)[0]
 
 
+def list_snippets(language):
+    my_db = mysql.connector.connect(host=config['HOST'], user=config['USER'], passwd=config['PASSWD'],
+                                    port=config['PORT'], database=config['DATABASE'])
+    cursor = my_db.cursor(prepared=True)
+
+    query = """SELECT snippet.name FROM snippet
+    JOIN language ON snippet.language_id=language.id
+    WHERE language.name=%s;"""
+    parameters = [language.lower()]
+    cursor.execute(query, parameters)
+
+    result = cursor.fetchall()
+
+    cursor.close()
+    my_db.close()
+
+    if len(result) == 0:
+        return None
+
+    # result is a list of tuples
+    return result
+
+
 def connect_to_database(command, query):
     # connection
     my_db = mysql.connector.connect(host=config['HOST'], user=config['USER'], passwd=config['PASSWD'],
                                     port=config['PORT'], database=config['DATABASE'])
     cursor = my_db.cursor()
 
-    if command == "$ list":
-        # we execute the operation stored in the query variable
-        cursor.execute(query)
-
-        # This method fetches all (or all remaining) rows of a query result set and returns a list of tuples.
-        listed_snippets = cursor.fetchall()
-
-        # return all of the snippets written in a specific language
-        for listed_snippet in listed_snippets:
-            return listed_snippet[0]
-
-    elif command == "$ search":
+    if command == "$ search":
         # we execute the operation stored in the query variable
         cursor.execute(query)
 
