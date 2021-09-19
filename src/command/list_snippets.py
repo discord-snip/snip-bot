@@ -1,13 +1,11 @@
-from src.database_connection import connect_to_database
+from src.database_connection import list_snippets
 
-def list_language_snippets(language):
-    query = (
-        f"""
-        SELECT snippet.name FROM snippet JOIN language ON snippet.language_id=language.id WHERE language.name LIKE '{language}';
-        """
-    )
 
-    connection = connect_to_database("$ list", query)
-    if connection == None:
+def command_list(language):
+    snippets = list_snippets(language)
+    if snippets is None:
         return f'No snippets for {language} found.'
-    return f"""```\n{connection}\n```"""
+
+    # snippets is a list of tuples:
+    # [('snippet1',), ('snippet2',), ...]
+    return f"```\n{snippets}\n```"

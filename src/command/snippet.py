@@ -1,14 +1,9 @@
-from src.database_connection import connect_to_database
+from src.database_connection import find_snippet
 
-def display_chosen_snippet(snippet_name, language):
-    query = (
-        f"""
-        SELECT snippet.name, code FROM snippet JOIN language ON snippet.language_id=language.id WHERE snippet.name LIKE '{snippet_name}' AND language.name LIKE '{language}';
-        """
-    )
 
-    connection = connect_to_database("$ snippet", query)
+def command_snippet(snippet_name, language):
+    snippet = find_snippet(snippet_name, language)
 
-    if connection == None:
-        return f'Snippet not found!'
-    return f"""```{language}\n{connection}\n```"""
+    if snippet is None:
+        return 'Snippet not found!'
+    return f"```{language}\n{snippet}\n```"
