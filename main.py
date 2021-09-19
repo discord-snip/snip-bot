@@ -30,7 +30,10 @@ if __name__ == '__main__':
         if command == "snippet" and len(msg) == 2:
             snippet_name = msg[0]
             snippet_language = msg[1]
-            await event.message.respond(display_snippet(snippet_name, snippet_language))
+            try:
+                await event.message.respond(display_snippet(snippet_name, snippet_language))
+            except TypeError as e:
+                await event.message.respond('An error occured: there is unsupported char in your message')
         elif command == "list" and len(msg) == 1:
             listed_language = msg[0]
             await event.message.respond(list_language_snippets(listed_language))
