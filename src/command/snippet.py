@@ -1,4 +1,4 @@
-from database_connection import connect_to_database
+from src.database_connection import connect_to_database
 
 def display_chosen_snippet(snippet_name, language):
     query = (

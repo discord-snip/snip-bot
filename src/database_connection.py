@@ -1,17 +1,12 @@
 import mysql.connector
-from dotenv import dotenv_values
+from .config import config
 
-# config .env .env.local
-config = {
-    **dotenv_values(".env"),
-    **dotenv_values(".env.local")
-}
 
 def connect_to_database(command, query):
     # connection
-    myDb = mysql.connector.connect(host=config['HOST'], user=config['USER'], passwd=config['PASSWD'], port=config['PORT'], database=config['DATABASE'])
-    cursor = myDb.cursor()
-
+    my_db = mysql.connector.connect(host=config['HOST'], user=config['USER'], passwd=config['PASSWD'],
+                                    port=config['PORT'], database=config['DATABASE'])
+    cursor = my_db.cursor()
 
     if command == "$ snippet":
         # we execute the operation stored in the query variable
@@ -42,6 +37,5 @@ def connect_to_database(command, query):
         for listed_language in listed_languages:
             return listed_language[0]
 
-
     cursor.close()
-    myDb.close()
+    my_db.close()
