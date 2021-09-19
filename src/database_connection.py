@@ -12,7 +12,7 @@ def find_snippet(name, language):
 
     query = """SELECT code FROM snippet
     JOIN language ON snippet.language_id=language.id
-    WHERE snippet.name LIKE %s AND language.name LIKE %s;"""
+    WHERE snippet.name=%s AND language.name=%s;"""
     parameters = (name.lower(), language.lower())
     cursor.execute(query, parameters)
 
