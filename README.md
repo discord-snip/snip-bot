@@ -5,7 +5,8 @@
 ## Before you start...
 
 ```bash
-$ cd /path/to/snip-bot 
-$ python3 -m venv ./venv
-$ pip install -r requirements.txt
+cd /path/to/snip-bot
+python3 -m venv ./venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
